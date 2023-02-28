@@ -1,0 +1,21 @@
+You can create a keyboard shortcut to open Firefox with Gmail.com as the default website by following these steps:
+
+   1. Open System Preferences by clicking on the Apple menu in the top left corner of the screen and selecting "System Preferences."
+
+   2. Click on "Keyboard" and then select the "Shortcuts" tab.
+
+   3. Click on "App Shortcuts" in the left sidebar.
+
+   4. Click the "+" button to add a new shortcut.
+
+   5. In the "Application" field, select "Firefox."
+
+   6. In the "Menu Title" field, type "Gmail.com" (without quotes) exactly as it appears in Firefox's menu, including capitalization and punctuation.
+
+   7. Click on the "Keyboard Shortcut" field and press the keys you want to use as the shortcut. For example, you could use "Command + Shift + G" or "Option + G."
+
+   8. Click "Add" to save the new shortcut.
+
+   9. Close the System Preferences window.
+
+Now, whenever you press the keys you specified, Firefox will open with Gmail.com as the default website.
