@@ -1,0 +1,44 @@
+You can use a combination of PostgreSQL's built-in backup tool pg_dumpall 
+and a simple script to automate the backup process and transfer the dump file to an SFTP server.
+
+Here are the steps to accomplish this:
+
+    1. Create a directory where you want to store the backup files. For example, /home/postgres/backups.
+
+    2. Create a new file in the directory called backup.sh and make it executable using the command chmod +x backup.sh.
+
+    3. Edit the backup.sh file and add the following code:
+    
+---------------------------------------    
+#!/bin/bash
+
+# Set the backup directory and file name
+BACKUP_DIR="/home/postgres/backups"
+BACKUP_FILE="backup-$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
+
+# Run the pg_dumpall command to create a compressed SQL dump of all databases
+pg_dumpall | gzip > "$BACKUP_DIR/$BACKUP_FILE"
+
+# Transfer the backup file to the SFTP server
+sftp user@your.sftp.server << EOF
+cd /path/to/remote/backup/folder
+put $BACKUP_DIR/$BACKUP_FILE
+quit
+EOF
+----------------------------------------
+
+ 1. Replace user@your.sftp.server with the SFTP username and server address you want to use, 
+    and replace /path/to/remote/backup/folder with the path to the directory 
+    where you want to store the backup files on the SFTP server.
+
+ 2. Save and close the backup.sh file.
+
+ 3. You can then set up a cron job to run the backup.sh script at regular intervals. 
+    For example, to run the script every day at midnight, you can add the following line to the crontab file:
+    
+    
+ 0 0 * * * /home/postgres/backups/backup.sh
+
+ 1. Save and close the crontab file.
+
+Your PostgreSQL databases will now be automatically backed up and transferred to your SFTP server every day at midnight.
