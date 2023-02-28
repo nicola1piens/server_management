@@ -37,3 +37,8 @@ try:
     print("Text inserted successfully.")
 except HttpError as error:
     print(f"An error occurred: {error}")
+
+    
+# Note that you will need to replace YOUR_GOOGLE_DOCS_FILE_ID with the ID of your Google Docs file, 
+# and PATH_TO_LOCAL_TXT_FILE with the path of your local .txt file. 
+# You will also need to have the google-auth and google-api-python-client libraries installed.
