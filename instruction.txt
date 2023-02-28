@@ -1,0 +1,46 @@
+To block access to an Almalinux server from all countries except for one, you can use a combination of firewall rules and geolocation data.
+
+Here are the general steps you can take:
+
+    1. Install a firewall on your Almalinux server, such as firewalld or iptables.
+    2. Obtain geolocation data that associates IP addresses with countries. There are many sources of such data available, such as MaxMind's GeoIP2 database or the IP2Location database.
+    3. Determine the IP address range for the country you want to allow access from.
+    4. Create a firewall rule that blocks all incoming traffic from all countries except for the one you want to allow. This can be done by creating a whitelist rule that allows traffic only from the IP range for the allowed country and blocking all other traffic.
+    5. Test your firewall rule by attempting to access your server from various IP addresses located in different countries. Verify that access is only allowed from the allowed country.
+
+Here is an example of how to implement this using firewalld:
+
+   1. Install firewalld if it is not already installed:
+
+$ sudo yum install firewalld
+
+2. Download geolocation data, such as the GeoLite2 Country database from MaxMind:
+
+bash
+
+$ sudo mkdir -p /usr/local/share/GeoIP
+$ cd /usr/local/share/GeoIP
+$ sudo wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
+$ sudo tar -zxvf GeoLite2-Country.tar.gz
+
+3. Determine the IP address range for the country you want to allow access from. You can use the geoiplookup command to lookup the IP address range for a specific country code:
+
+perl
+
+$ geoiplookup -f /usr/local/share/GeoIP/GeoLite2-Country.mmdb XX | grep -v "#" | awk '{print $2}' | tr -d ','
+
+Replace XX with the two-letter country code for the country you want to allow access from.
+
+4. Create a new firewalld zone that blocks all incoming traffic except for traffic from the allowed IP address range:
+
+css
+
+$ sudo firewall-cmd --permanent --new-zone=allow-country
+$ sudo firewall-cmd --permanent --zone=allow-country --add-source=IP-ADDRESS-RANGE/XX --permanent
+$ sudo firewall-cmd --permanent --zone=allow-country --add-port=22/tcp
+$ sudo firewall-cmd --permanent --zone=allow-country --set-default=no
+$ sudo firewall-cmd --reload
+
+Replace IP-ADDRESS-RANGE with the IP address range for the allowed country obtained from step 3, and replace XX with the two-letter country code.
+
+5. Verify that the firewall rule is working by attempting to access your server from various IP addresses located in different countries. Verify that access is only allowed from the allowed country.
